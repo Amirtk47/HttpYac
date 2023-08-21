@@ -10,7 +10,7 @@ const wait = axios.get(`${baseUrl}/products`).then(res => {
         if(length===78 && exists){
             axios.delete(`${baseUrl}/products?id=eq.78`)
             .then(res => {
-                // console.log(res);
+                return null;
             })
         }
         return null;
