@@ -4,8 +4,7 @@ const axios = require('axios');
 
 console.log("pre");
 
-async function wait(){
- await axios.get(`${baseUrl}/products`).then(res => {
+const wait = axios.get(`${baseUrl}/products`).then(res => {
         let length = res.data.length;
         let exists = res.data.find(item => item.id === 78);
         if(length===78 && exists){
@@ -16,8 +15,7 @@ async function wait(){
         }
         return null;
     })
-} 
-    exports.wait = wait();
+    exports.wait = wait;
 }}
 ###
 
@@ -69,15 +67,13 @@ let postData = {
   "units_on_order": 0,
   "reorder_level": 10
 }
-async function wait(){
- await axios.post(`${baseUrl}/products`,
-        postData,
-        {headers:{  'Content-Type': 'application/json'} } ).then(res => {
-            console.log("pre posted before Patch request");
-            return null;
-        })
-} 
- exports.wait = wait();
+const wait = axios.post(`${baseUrl}/products`,
+            postData,
+            {headers:{  'Content-Type': 'application/json'} } ).then(res => {
+                console.log("pre posted before Patch request");
+                return null;
+            })
+ exports.wait = wait;
 }}
 
 PATCH {{baseUrl}}/products?id=eq.78
@@ -96,15 +92,13 @@ console.log("post req after Patch")
 const {expect} = require('chai');
 const axios = require("axios");
 
-async function wait(){
-    await axios.get(`${baseUrl}/products?id=eq.78`).then(res => {
-        test("Check Patch", () => {
-                console.log(res.data)
-                expect(res.data[0].product_name).to.equal("Saffaron-patch")
+const wait = axios.get(`${baseUrl}/products?id=eq.78`).then(res => {
+            test("Check Patch", () => {
+                    console.log(res.data)
+                    expect(res.data[0].product_name).to.equal("Saffaron-patch")
+                })
             })
-        })
-}
-exports.wait = wait();
+exports.wait = wait;
 }}
 
 ###
@@ -126,15 +120,13 @@ let postData = {
   "units_on_order": 0,
   "reorder_level": 10
 }
-async function wait(){
-   await axios.post(`${baseUrl}/products`,
+const wait = axios.post(`${baseUrl}/products`,
         postData,
         {headers:{  'Content-Type': 'application/json'} } ).then(res => {
             console.log("pre posted before Patch request");
             return 1;
         })
-} 
- exports.wait = wait();
+ exports.wait = wait;
 }}
 
 DELETE {{baseUrl}}/products?id=eq.78
@@ -145,14 +137,12 @@ DELETE {{baseUrl}}/products?id=eq.78
 const {expect} = require('chai');
 const axios = require("axios");
 
-async function wait(){
-   await axios.get(`${baseUrl}/products`).then(res => {
-            test("Check for Delete", () => {
-                console.log(res.data.length)
-                expect(res.data.length).to.equal(77);
-            })
+ const wait = axios.get(`${baseUrl}/products`).then(res => {
+                test("Check for Delete", () => {
+                    console.log(res.data.length)
+                    expect(res.data.length).to.equal(77);
+                })
     })
-}
-    exports.wait = wait();
+    exports.wait = wait;
 
 }}
