@@ -8,7 +8,7 @@ const wait = axios.get(`${baseUrl}/products`).then(res => {
         let length = res.data.length;
         let exists = res.data.find(item => item.id === 78);
         if(length===78 && exists){
-            axios.delete(`${baseUrl}/products?id=eq.78`)
+           return axios.delete(`${baseUrl}/products?id=eq.78`)
             .then(res => {
                 return null;
             })
@@ -124,7 +124,7 @@ const wait = axios.post(`${baseUrl}/products`,
         postData,
         {headers:{  'Content-Type': 'application/json'} } ).then(res => {
             console.log("pre posted before Patch request");
-            return 1;
+            return null;
         })
  exports.wait = wait;
 }}
