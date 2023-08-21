@@ -1,0 +1,32 @@
+{{
+  const axios = require('axios');
+  
+     const wait = axios.get("https://nw.rayvarz.center/api/products").then(res => {
+        console.log("on every run");
+        return 2;
+    })
+
+
+  exports.wait = wait;
+}}
+
+###
+
+{{
+    const axios = require('axios');
+
+     const waitSecond = axios.get("https://nw.rayvarz.center/api/products?id=eq.1").then(res => {
+        console.log("pre-req");
+        return 1;
+    })
+    exports.waitSecond = waitSecond;
+}}
+GET https://httpbin.org/anything?delay={{wait}}&delay={{waitSecond}}
+{{
+   const axios = require('axios');
+
+  axios.get({baseUrl}+"/products?id=eq.1").then(res => {
+        console.log("post-req");
+        
+    })
+}}

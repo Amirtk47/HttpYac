@@ -1,0 +1,147 @@
+{{
+    //pre-request on every run
+const axios = require('axios');
+
+console.log("pre");
+
+const wait = axios.get(`${baseUrl}/products`).then(res => {
+        let length = res.data.length;
+        let exists = res.data.find(item => item.id === 78);
+        if(length===78 && exists){
+            axios.delete(`${baseUrl}/products?id=eq.78`)
+            .then(res => {
+                // console.log(res);
+            })
+        }
+        return 1;
+    })
+    exports.wait = wait;
+}}
+###
+
+GET {{baseUrl}}/products/1
+?? status == 200
+?? body product_name == Chai
+?? body id == 1
+
+###
+
+GET {{baseUrl}}/products
+?? status == 200
+?? body length == 77
+
+###
+
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "id": 78,
+  "product_name": "Saffaron",
+  "discontinued": 0,
+  "supplier_id": 12,
+  "category_id": 2,
+  "quantity_per_unit": "20 mg",
+  "unit_price": 100,
+  "units_in_stock": 50,
+  "units_on_order": 0,
+  "reorder_level": 10
+}
+?? status == 201
+
+###
+{{
+//pre-request Patch 
+
+const axios = require('axios');
+
+let postData = {
+  "id": 78,
+  "product_name": "Saffaron",
+  "discontinued": 0,
+  "supplier_id": 12,
+  "category_id": 2,
+  "quantity_per_unit": "20 mg",
+  "unit_price": 100,
+  "units_in_stock": 50,
+  "units_on_order": 0,
+  "reorder_level": 10
+}
+const waitPrePatch = axios.post(`${baseUrl}/products`,
+ postData,
+{headers:{  'Content-Type': 'application/json'} } ).then(res => {
+    console.log("pre posted before Patch request");
+    return 1;
+})
+ exports.waitPrePatch = waitPrePatch;
+}}
+
+PATCH {{baseUrl}}/products?id=eq.78
+Content-Type: application/json
+
+{
+ "product_name": "Saffaron-patch"
+}
+?? status == 204
+
+{{
+ // post-request Patch
+
+console.log("post req after Patch")
+
+const {expect} = require('chai');
+const axios = require("axios");
+
+axios.get(`${baseUrl}/products?id=eq.78`).then(res => {
+ test("Check Patch", () => {
+        console.log(res.data)
+        expect(res.data[0].product_name).to.equal("Saffaron-patch")
+    })
+})
+
+}}
+
+###
+
+{{
+//pre-request Delete 
+
+const axios = require('axios');
+
+let postData = {
+  "id": 78,
+  "product_name": "Saffaron",
+  "discontinued": 0,
+  "supplier_id": 12,
+  "category_id": 2,
+  "quantity_per_unit": "20 mg",
+  "unit_price": 100,
+  "units_in_stock": 50,
+  "units_on_order": 0,
+  "reorder_level": 10
+}
+const waitPrePatch = axios.post(`${baseUrl}/products`,
+ postData,
+{headers:{  'Content-Type': 'application/json'} } ).then(res => {
+    console.log("pre posted before Patch request");
+    return 1;
+})
+ exports.waitPrePatch = waitPrePatch;
+}}
+
+DELETE {{baseUrl}}/products?id=eq.78
+?? status == 204
+
+{{
+    // post-request Delete
+    const {expect} = require('chai');
+    const axios = require("axios");
+
+    axios.get(`${baseUrl}/products`).then(res => {
+        test("Check for Delete", () => {
+            console.log(res.data.length)
+            expect(res.data.length).to.equal(77);
+        })
+})
+
+}}

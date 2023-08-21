@@ -1,0 +1,51 @@
+{{
+//pre-request Patch 
+
+const axios = require('axios');
+
+let postData = {
+  "id": 78,
+  "product_name": "Saffaron",
+  "discontinued": 0,
+  "supplier_id": 12,
+  "category_id": 2,
+  "quantity_per_unit": "20 mg",
+  "unit_price": 100,
+  "units_in_stock": 50,
+  "units_on_order": 0,
+  "reorder_level": 10
+}
+
+const waitPrePatch = axios.post("https://nw.rayvarz.center/api/products",
+ postData,
+{headers:{  'Content-Type': 'application/json'} } ).then(res => {
+    console.log("pre posted before Patch request");
+    return "1";
+})
+ exports.waitPrePatch = waitPrePatch;
+}}
+
+PATCH {{baseUrl}}/products?id=eq.78
+Content-Type: application/json
+
+{
+ "product_name": "Saffaron-patch"
+}
+?? status == 204
+
+# {{
+#  // post-request for Patch
+
+# console.log("post req after Patch")
+
+# const {expect} = require('chai');
+# const axios = require("axios");
+
+# axios.get("https://nw.rayvarz.center/api/products?id=eq.78").then(res => {
+#     test("Check Patch", () => {
+#         console.log(res.data)
+#         expect(res.data[0].product_name).to.equal("Saffaron-patch")
+#     })
+# })
+
+# }}
